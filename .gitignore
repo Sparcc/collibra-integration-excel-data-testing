@@ -56,3 +56,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Don't want to leak sensitive data do we?
+*.xlsx
+*.csv
