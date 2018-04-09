@@ -11,14 +11,10 @@ class compareExcelFiles(unittest.TestCase):
         ws=wb.active
         wb2 = load_workbook(filename = 'Default.xlsx')
         ws2=wb2.active
-        wb = load_workbook(filename = 'collibra-tute-test-data.xlsx')
-        ws=wb.active
-        wb2 = load_workbook(filename = 'Default.xlsx')
-        ws2=wb2.active
         i=2 #ignoring headings
         rowString=""
-        ofile  = open('custom-testdata.csv', "w", newline='')
-        writer = csv.writer(ofile)
+        #ofile  = open('custom-testdata.csv', "w", newline='')
+        #writer = csv.writer(ofile)
         firstCol = ["",""]
         secondCol = ["",""]
         while i<51:
