@@ -6,25 +6,24 @@ import csv
 class compareExcel:
     file1Cols = []
     file2Cols = []
+    self.wb = {}
+    self.ws = {}
     def __init__(self, file1, file2, debugging = False):
         self.debugging = debugging
-        self.wb = {}
-        self.ws = {}
+        self.setSourceFiles(file1,file2)
+    def setSourceFiles(self, file1, file2):
         self.wb["file1"] = load_workbook(filename = file1)
         self.ws["file1"] = self.wb["file1"].active
         self.wb["file2"] = load_workbook(filename = file2)
         self.ws["file2"] = self.wb["file2"].active
     def setDataLength(self, upperRange):
-        #if (
-        #    self.dataLength = 
+        #TODO: Add code to calculate upperRange of both files and see if they are different
         self.upperRange = upperRange
     def compareFiles(self):
-        #see first row
-        #if first cell (heading) matches file1Cols[i] then firstColFile1=Cell collm
-        #for now columns must be manually identified, two coll
         firstCol = {}
         secondCol = {}
-        i=2
+        startingRange = 2 #0 is null, 1 is heading
+        i=startingRange
         while i<self.upperRange:
             firstCol["file1"] = self.ws["file1"][self.file1Cols[0]+str(i)].value
             secondCol["file1"] = self.ws["file1"][self.file1Cols[1]+str(i)].value
