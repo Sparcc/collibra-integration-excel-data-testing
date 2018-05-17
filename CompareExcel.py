@@ -33,10 +33,11 @@ class CompareExcel:
             while i2 < self.numCols:
                 row["file1"] = self.ws["file1"][self.file1Cols[i2]+str(i)].value
                 row["file2"] = self.ws["file2"][self.file2Cols[i2]+str(i)].value
-                assert(row["file1"] == row["file2"])
+                self.compareData(row["file1"],row["file2"])
                 i2+=1
             i+=1
-        
+    def compareData(d1,d2):
+        assert(d1 == d2)
     def setColumns(self, file1Cols, file2Cols):
         for x in file1Cols:
             self.file1Cols.append(x)
