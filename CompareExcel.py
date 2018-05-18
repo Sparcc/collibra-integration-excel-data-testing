@@ -24,18 +24,21 @@ class CompareExcel:
         #TODO: Add code to calculate upperRange of both files and see if they are different
         self.upperRange = upperRange
     def compareFiles(self):
-        row = {}
         startingRange = 2 #0 is null, 1 is heading
-        i=startingRange
-        while i<self.upperRange:
+        rowNum=startingRange
+        while rowNum<self.upperRange:
             #compare file1 row and file2 row for each col
-            i2 = 0
-            while i2 < self.numCols:
-                row["file1"] = self.ws["file1"][self.file1Cols[i2]+str(i)].value
-                row["file2"] = self.ws["file2"][self.file2Cols[i2]+str(i)].value
-                self.compareData(row["file1"],row["file2"])
-                i2+=1
-            i+=1
+            self.processRow(rowNum)
+            rowNum+=1
+    def processRow(rowNum):
+        #go through each column in row
+        row = {}
+        colNum = 0
+        while colNum < self.numCols:
+            row["file1"] = self.ws["file1"][self.file1Cols[colNum]+str(rowNum)].value
+            row["file2"] = self.ws["file2"][self.file2Cols[colNum]+str(rowNum)].value
+            self.compareData(row["file1"],row["file2"])
+            colNum+=1
     def compareData(d1,d2):
         assert(d1 == d2)
     def setColumns(self, file1Cols, file2Cols):
