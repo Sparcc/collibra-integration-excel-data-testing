@@ -59,6 +59,7 @@ target/
 
 # Don't want to leak sensitive data do we?
 *.xlsx
+*.xls
 *.csv
 !CompareExcel-test-file1.xlsx
 !CompareExcel-test-file2.xlsx
