@@ -6,6 +6,7 @@ import unittest
 
 class CompareExcelMapping(CompareExcel):
     def buildMaps(self):
+        #define general maps
         self.mapping={}
         self.mapping['schema'] = ['R','G']
         self.mapping['size'] = ['P','H']
@@ -16,7 +17,7 @@ class CompareExcelMapping(CompareExcel):
         self.mapping['desc'] = ['E','M']
         self.mapping['pk'] = ['N','N']
         
-        #define maps
+        #define one to many maps
         self.oneToManyMapping = []
         #1st mapping
         self.oneToManyMapping.append({})
@@ -36,7 +37,6 @@ class CompareExcelMapping(CompareExcel):
             subCol=0
             for k,v in map['separate'].items():
                 row["src"] = self.ws["src"][v+str(rowNum)].value
-                #print('comparing '+row["dest"][subCol] + ' with '+ row["src"] + ' on roNum='+ str(rowNum))
                 self.compareData(row["dest"][subCol],row["src"],rowNum,map['concat']+str(rowNum),v+str(rowNum))
                 subCol+=1
     def processRow(self,rowNum):
@@ -45,10 +45,11 @@ class CompareExcelMapping(CompareExcel):
 
 class testcompareExcelIntegrationData(unittest.TestCase):
     def setUp(self):
-        #self.comparer = CompareExcel(dest, src)
+        #checking base class
         self.comparer = CompareExcel()
         self.comparer.setDataLength(52)
         
+        #checking oracle data
         self.oracleComparer = CompareExcelMapping()
         self.oracleComparer.setDataLength(36)
     def testCompareExcel(self):
@@ -59,6 +60,17 @@ class testcompareExcelIntegrationData(unittest.TestCase):
         src = ['A','C','F']
         self.comparer.setColumns(dest, src)
         self.comparer.compareFiles()
+        self.assertEqual(True, self.comparer.testPassed)
+    def testCompareExcelDataConversion(self):
+        dest = "CompareExcel-test-file1.xlsx"
+        src = "CompareExcel-test-file2.xlsx"
+        self.comparer.setSourceFiles(dest, src)
+        dest = ['A','C','D']
+        src = ['A','C','F']
+        self.comparer.setColumns(dest, src)
+        terms = {'Y':'True','none':'False','F':'False','':'False'} #key compared to value
+        for k,v in terms.items():
+            self.assertEqual(self.comparer.convertToCommonTerm(k),v)
     def testBIDW_Excel_calendar_table(self):
         dest = "./oracle-data/oracle-collibra-export-calendar.xlsx"
         src = "./oracle-data/oracle-export-calendar.xlsx"

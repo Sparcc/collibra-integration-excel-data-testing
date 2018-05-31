@@ -61,8 +61,6 @@ class CompareExcel:
             row["dest"] = self.ws["dest"][self.destColumns[colNum]+str(rowNum)].value
             row["src"] = self.ws["src"][self.srcColumns[colNum]+str(rowNum)].value
             self.compareData(row["dest"],row["src"],rowNum,self.destColumns[colNum]+str(rowNum),self.srcColumns[colNum]+str(rowNum))
-            #if(not self.compareData(row["dest"],row["src"],rowNum)):
-            #    print('mapping {v1} to {v2} had an error'.format(v1=self.destColumns[colNum]+str(rowNum),v2=self.srcColumns[colNum]+str(rowNum)))
             colNum+=1
     def compareData(self,d1,d2,rowNum,d1Map,d2Map):
         d1 = self.convertToCommonTerm(d1)
