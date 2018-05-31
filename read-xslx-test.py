@@ -43,7 +43,7 @@ class CompareExcelMapping(CompareExcel):
         self.verifyOneToManyMapRow(rowNum)
         self.verifyMapRow(rowNum)            
 
-class testcompareExcelIntegrationData(unittest.TestCase):
+class TestCompareExcelIntegrationData(unittest.TestCase):
     def setUp(self):
         #checking base class
         self.comparer = CompareExcel()
