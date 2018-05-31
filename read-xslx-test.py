@@ -11,7 +11,7 @@ class CompareExcelMapping(CompareExcel):
         self.mapping['size'] = ['P','H']
         self.mapping['nullable'] = ['M','I']
         self.mapping['col_pos_id'] = ['F','J']
-        self.mapping['frac_digs'] = ['Q','K']
+        self.mapping['frac_digs'] = ['O','K']
         self.mapping['default_value'] = ['I','L']
         self.mapping['desc'] = ['E','M']
         self.mapping['pk'] = ['N','N']
@@ -27,6 +27,7 @@ class CompareExcelMapping(CompareExcel):
         for k,v in self.mapping.items():
             d1 = self.ws["dest"][v[0]+str(rowNum)].value
             d2 = self.ws["src"][v[1]+str(rowNum)].value
+            self.compareData(d1,d2,rowNum,v[0]+str(rowNum),v[1]+str(rowNum))
     def verifyOneToManyMapRow(self,rowNum):
         #process schema,table,column
         for map in self.oneToManyMapping:
@@ -35,7 +36,8 @@ class CompareExcelMapping(CompareExcel):
             subCol=0
             for k,v in map['separate'].items():
                 row["src"] = self.ws["src"][v+str(rowNum)].value
-                self.compareData(row["dest"][subCol],row["src"],rowNum)
+                #print('comparing '+row["dest"][subCol] + ' with '+ row["src"] + ' on roNum='+ str(rowNum))
+                self.compareData(row["dest"][subCol],row["src"],rowNum,map['concat']+str(rowNum),v+str(rowNum))
                 subCol+=1
     def processRow(self,rowNum):
         self.verifyOneToManyMapRow(rowNum)
@@ -58,8 +60,8 @@ class testcompareExcelIntegrationData(unittest.TestCase):
         self.comparer.setColumns(dest, src)
         self.comparer.compareFiles()
     def testBIDW_Excel_calendar_table(self):
-        dest = "oracle-collibra-export-calendar.xlsx"
-        src = "oracle-export-calendar.xlsx"
+        dest = "./oracle-data/oracle-collibra-export-calendar.xlsx"
+        src = "./oracle-data/oracle-export-calendar.xlsx"
         self.oracleComparer.setSourceFiles(dest, src)
         self.oracleComparer.buildMaps()
         self.oracleComparer.compareFiles(startingRange = 2)
