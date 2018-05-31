@@ -13,13 +13,13 @@ class CompareExcel:
     def convertToCommonTerm(self,v):
         v = str(v)
         returnValue = v
-        for c in ("yes", "true", "t", 'y'):
+        for c in ('yes', 'true', 't', 'y'):
             if v.lower() == c:
                 returnValue = 'True'
-        for c in ("no", "false", "f", 'n'):
+        for c in ('no', 'false', 'f', 'n'):
             if v.lower() == c:
                 returnValue = 'False'
-        for c in ("none",'none'):
+        for c in ("none",'none'): # there is a difference between ' and " !
             if v.lower() == c:
                 returnValue = 'False'
         for c in ("",''):
