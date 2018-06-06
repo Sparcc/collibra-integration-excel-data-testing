@@ -41,8 +41,22 @@ class CompareExcelMapping(CompareExcel):
                 subCol+=1
     def processRow(self,rowNum):
         self.verifyOneToManyMapRow(rowNum)
-        self.verifyMapRow(rowNum)            
+        self.verifyMapRow(rowNum)
 
+class CompareExcelBIDW(CompareExcelMapping):
+    def buildMaps(self):
+        #define general maps
+        #define one to many maps
+        self.oneToManyMapping = []
+        #1st mapping
+        self.oneToManyMapping.append({})
+        self.oneToManyMapping[0]['concat'] = 'A'
+        self.oneToManyMapping[0]['separate'] = {}
+        self.oneToManyMapping[0]['separate'] = {'schema':'A','table':'C','column':'F'}
+    
+    def processRow(self,rowNum):
+        self.verifyOneToManyMapRow(rowNum)
+        
 class TestCompareExcelIntegrationData(unittest.TestCase):
     def setUp(self):
         #checking base class
@@ -52,6 +66,10 @@ class TestCompareExcelIntegrationData(unittest.TestCase):
         #checking oracle data
         self.oracleComparer = CompareExcelMapping()
         self.oracleComparer.setDataLength(36)
+        
+        #checking wherescape data
+        self.bidwComparer = CompareExcelBIDW()
+        self.bidwComparer.setDataLength(2597)
     def testCompareExcel(self):
         dest = "CompareExcel-test-file1.xlsx"
         src = "CompareExcel-test-file2.xlsx"
@@ -71,13 +89,19 @@ class TestCompareExcelIntegrationData(unittest.TestCase):
         terms = {'Y':'True','none':'False','F':'False','':'False'} #key compared to value
         for k,v in terms.items():
             self.assertEqual(self.comparer.convertToCommonTerm(k),v)
-    def testBIDW_Excel_calendar_table(self):
-        dest = "./oracle-data/oracle-collibra-export-calendar.xlsx"
-        src = "./oracle-data/oracle-export-calendar.xlsx"
-        self.oracleComparer.setSourceFiles(dest, src)
-        self.oracleComparer.buildMaps()
+    def testOracle_Excel_calendar_table(self): 
+        dest = "./oracle-data/oracle-collibra-export-calendar.xlsx" 
+        src = "./oracle-data/oracle-export-calendar.xlsx" 
+        self.oracleComparer.setSourceFiles(dest, src) 
+        self.oracleComparer.buildMaps() 
         self.oracleComparer.compareFiles(startingRange = 2)
-        self.assertEqual(True, self.oracleComparer.testPassed)
+        self.assertEqual(True, self.oracleComparer.testPassed) 
+    def testWherescape_Excel(self):
+        dest = "./wherescape-collibra-export.xlsx"
+        src = "./wherescape-export.xlsx"
+        self.bidwComparer.setSourceFiles(dest, src)
+        self.bidwComparer.buildMaps()
+        self.bidwComparer.compareFiles(startingRange = 2)
     #def tearDown(self):
 if __name__ == '__main__':
     unittest.main()
